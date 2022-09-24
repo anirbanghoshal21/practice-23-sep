@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using BusinessLogicLibrary;
+using HelperLibrary;
 
 namespace ADO
 {
@@ -11,27 +13,38 @@ namespace ADO
     {
         static void Main(string[] args)
         {
-
-           
-           string connectionString = "Data Source=BTECH1807169\\SQLEXPRESS;Initial Catalog=pubs;Integrated Security=True";
-           Console.WriteLine("enter the publication id to search the books for:");
-            string pubid =Console.ReadLine();
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("select * from titles where pub_id='" + pubid + "'", cn);
-            cn.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-
-            while (dr.Read())
+            try
             {
-                Console.WriteLine(dr["title_id"]);
-                Console.WriteLine(dr["title"]);
-                Console.WriteLine(dr["type"]);
-                Console.WriteLine(dr["pub_id"]);
-                Console.WriteLine(dr["price"]);
-                Console.WriteLine("----------------------");
+
+
+                //Console.WriteLine("enter the publication id to search the books for: ");
+                //BL_Titles bl = new BL_Titles();
+                //bl.PubId = Console.ReadLine();
+
+                Helper_Titles titles = new Helper_Titles();
+
+                List<BL_Titles> books = new List<BL_Titles>();
+
+                books = titles.Get_Titles();
+
+                foreach (var item in books)
+                {
+                    Console.WriteLine(item.PubId);
+                    Console.WriteLine(item.TitleName);
+                    Console.WriteLine(item.PubId);
+
+                }
+
+
             }
-            cn.Close();
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
             Console.Read();
+
         }
     }
-}
+    }
+
